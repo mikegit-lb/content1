@@ -1,0 +1,612 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Forms Masterclass (A2 to B1)</title>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #50E3C2;
+            --bg: #F4F7F6;
+            --text: #333333;
+            --light-gray: #E8ECEF;
+            --success: #28a745;
+            --error: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            max-height: 85vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 1rem;
+        }
+
+        .sidebar button {
+            display: block;
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 1rem;
+            font-size: 1rem;
+            color: var(--text);
+            cursor: pointer;
+            border-bottom: 1px solid var(--light-gray);
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+
+        .sidebar button:hover {
+            background-color: var(--light-gray);
+        }
+
+        .sidebar button.active {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .content {
+            flex: 3;
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            min-height: 60vh;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin-top: 1.5rem;
+        }
+
+        .exercise-divider {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
+            margin: 2rem 0;
+        }
+
+        .tip-box {
+            background-color: #FFF3CD;
+            border-left: 5px solid #FFC107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        button.action-btn {
+            background-color: var(--secondary);
+            color: #1a4d40;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        button.action-btn:hover {
+            background-color: #3bc2a3;
+        }
+
+        .feedback {
+            margin-top: 0.5rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .feedback.hint {
+            background-color: #e8f4fd;
+            color: #0b5394;
+            display: block;
+            border-left: 4px solid var(--primary);
+            font-weight: normal;
+        }
+
+        .visual-prompt {
+            font-size: 3rem;
+            text-align: center;
+            margin: 1rem 0;
+            background: var(--light-gray);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 3rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+            z-index: 1;
+        }
+
+        .timeline-item {
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            text-align: center;
+            width: 18%;
+            font-size: 0.9rem;
+        }
+
+        .info-card-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .info-card.a { background: #e3f2fd; }
+        .info-card.b { background: #ffebee; }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .timeline {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .timeline::before {
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                width: 4px;
+                height: 100%;
+            }
+            .timeline-item {
+                width: 80%;
+                margin: 0 auto;
+            }
+            .info-card-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Future Forms Masterclass</h1>
+        <p>Mastering "Will", "Be Going To", and "Present Continuous"</p>
+    </header>
+
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <button class="active" onclick="showSection(1)">1. Role-Play (3 Tasks)</button>
+            <button onclick="showSection(2)">2. Info Gap (3 Tasks)</button>
+            <button onclick="showSection(3)">3. Storytelling (3 Tasks)</button>
+            <button onclick="showSection(4)">4. Debates (4 Tasks)</button>
+            <button onclick="showSection(5)">5. Transformations (5 Tasks)</button>
+            <button onclick="showSection(6)">6. Timeline (5 Events)</button>
+            <button onclick="showSection(7)">7. Interview (5 Questions)</button>
+            <button onclick="showSection(8)">8. Error Correction (5 Sentences)</button>
+            <button onclick="showSection(9)">9. Chain Story (3 Starters)</button>
+            <button onclick="showSection(10)">10. Real-Life App (3 Tasks)</button>
+        </div>
+
+        <div class="content">
+            
+            <div id="section-1" class="section active">
+                <h2>1. Contextual Role-Playing 🎭</h2>
+                <div class="tip-box">
+                    <strong>Rule Check:</strong> Use <em>be going to</em> for existing plans. Use <em>will</em> for spontaneous decisions. Use <em>present continuous</em> for fixed arrangements (like booked flights).
+                </div>
+                
+                <h3>Exercise 1: The Vacation ✈️</h3>
+                <p>You are planning a vacation. Write 3 sentences: one fixed arrangement, one plan, one spontaneous decision.</p>
+                <textarea rows="3" placeholder="Type your sentences here..."></textarea>
+                <button class="action-btn" onclick="toggleHint('fb-1-1', 'Example:<br>1. I am flying to Paris tomorrow (Fixed).<br>2. I am going to visit the Eiffel Tower (Plan).<br>3. I think I will buy a souvenir right now (Spontaneous).')">Show Example</button>
+                <div id="fb-1-1" class="feedback"></div>
+
+                <hr class="exercise-divider">
+
+                <h3>Exercise 2: The Restaurant 🍔</h3>
+                <p>You are at a restaurant. You planned to eat a burger, but the waiter says they have fresh cake. Write a sentence for your original plan, and a new sudden decision.</p>
+                <textarea rows="2" placeholder="Type your sentences here..."></textarea>
+                <button class="action-btn" onclick="toggleHint('fb-1-2', 'Example:<br>I am going to have the burger. Oh, you have fresh cake? I will have a slice of cake too!')">Show Example</button>
+                <div id="fb-1-2" class="feedback"></div>
+
+                <hr class="exercise-divider">
+
+                <h3>Exercise 3: Weekend Changes ☔</h3>
+                <p>You arranged to play tennis at 3 PM, but it suddenly starts raining. Cancel the arrangement and make a quick decision about what to do instead.</p>
+                <textarea rows="2" placeholder="Type your sentences here..."></textarea>
+                <button class="action-btn" onclick="toggleHint('fb-1-3', 'Example:<br>I am playing tennis at 3 PM... Wait, it’s raining! I will stay home and watch a movie instead.')">Show Example</button>
+                <div id="fb-1-3" class="feedback"></div>
+            </div>
+
+            <div id="section-2" class="section">
+                <h2>2. Information Gap 🗣️</h2>
+                <p>Find a partner. Student A knows part of the story, Student B knows the rest. Write down the conversation you would have!</p>
+                
+                <h3>Exercise 1: Weekend Weather</h3>
+                <div class="info-card-container">
+                    <div class="info-card a"><strong>Student A:</strong> You are visiting your grandparents this weekend.</div>
+                    <div class="info-card b"><strong>Student B:</strong> You checked the news. It is going to rain all weekend.</div>
+                </div>
+                <textarea rows="3" placeholder="Write your conversation here..."></textarea>
+                <button class="action-btn" onclick="toggleHint('fb-2-1', 'A: What are you going to do this weekend?<br>B: I’ll stay home. It’s going to rain! You?<br>A: I am visiting my grandparents.')">Show Example</button>
+                <div id="fb-2-1" class="feedback"></div>
+
+                <hr class="exercise-divider">
+
+                <h3>Exercise 2: The Cinema Ticket</h3>
+                <div class="info-card-container">
+                    <div class="info-card a"><strong>Student A:</strong> You are seeing the new action movie at 7 PM tonight.</div>
+                    <div class="info-card b"><strong>Student B:</strong> You know the 7 PM movie is sold out.</div>
+                </div>
+                <textarea rows="3" placeholder="Write your conversation here..."></textarea>
+                <button class="action-btn" onclick="toggleHint('fb-2-2', 'A: I am seeing the action movie at 7 PM.<br>B: Oh no, it is sold out!<br>A: Really? Then I will watch a comedy instead.')">Show Example</button>
+                <div id="fb-2-2" class="feedback"></div>
+
+                <hr class="exercise-divider">
+
+                <h3>Exercise 3: The Sick Friend</h3>
+                <div class="info-card-container">
+                    <div class="info-card a"><strong>Student A:</strong> You are organizing a party. You plan to invite Sarah.</div>
+                    <div class="info-card b"><strong>Student B:</strong> You just found out Sarah is very sick.</div>
+                </div>
+                <textarea rows="3" placeholder="Write your conversation here..."></textarea>
+                <button class="action-btn" onclick="toggleHint('fb-2-3', 'A: I am going to invite Sarah to my party.<br>B: Sarah is sick today.<br>A: Oh no! I will call her to say get well soon.')">Show Example</button>
+                <div id="fb-2-3" class="feedback"></div>
+            </div>
+
+            <div id="section-3" class="section">
+                <h2>3. Storytelling with Visual Prompts 🖼️</h2>
+                <p>Look at the emojis and answer the questions using Present Continuous, Be Going To, or Will.</p>
+                
+                <h3>Exercise 1: The Traveler</h3>
+                <div class="visual-prompt">👩‍🦰 🧳 ✈️ ⛈️</div>
+                <input type="text" placeholder="1. What is she doing right now? (Present Continuous)">
+                <input type="text" placeholder="2. What is she going to do? (Plan)">
+                <input type="text" placeholder="3. What will happen if it storms? (Prediction)">
+                <button class="action-btn" onclick="toggleHint('fb-3-1', '1. She is packing her suitcase.<br>2. She is going to travel.<br>3. Her flight will be delayed.')">Check Answers</button>
+                <div id="fb-3-1" class="feedback"></div>
+
+                <hr class="exercise-divider">
+
+                <h3>Exercise 2: The Chef</h3>
+                <div class="visual-prompt">👨‍🍳 🍝 🔥 🚒</div>
+                <input type="text" placeholder="1. What is he doing right now? (Present Continuous)">
+                <input type="text" placeholder="2. What is he going to eat? (Plan)">
+                <input type="text" placeholder="3. Oh no, a fire! What will he do? (Spontaneous)">
+                <button class="action-btn" onclick="toggleHint('fb-3-2', '1. He is cooking pasta.<br>2. He is going to eat spaghetti.<br>3. He will call the fire department!')">Check Answers</button>
+                <div id="fb-3-2" class="feedback"></div>
+
+                <hr class="exercise-divider">
+
+                <h3>Exercise 3: The Student</h3>
+                <div class="visual-prompt">👦 📚 😴 ❌</div>
+                <input type="text" placeholder="1. What is he doing right now? (Present Continuous)">
+                <input type="text" placeholder="2. What is he going to take tomorrow? (Plan)">
+                <input type="text" placeholder="3. Look how tired he is! What will happen? (Prediction based on evidence/opinion)">
+                <button class="action-btn" onclick="toggleHint('fb-3-3', '1. He is studying for an exam.<br>2. He is going to take a test tomorrow.<br>3. He will probably fall asleep (or: He is going to fall asleep).')">Check Answers</button>
+                <div id="fb-3-3" class="feedback"></div>
+            </div>
+
+            <div id="section-4" class="section">
+                <h2>4. Debates & Discussions 💬</h2>
+                <div class="tip-box">Practice speaking! Answer these open-ended questions out loud or write them down.</div>
+                
+                <h3>Discussion 1: Education (Predictions - Will)</h3>
+                <p>Do you think AI and robots will replace teachers in 10 years? Why or why not?</p>
+                <textarea rows="2" placeholder="I think AI will..."></textarea>
+
+                <h3>Discussion 2: Personal Growth (Plans - Be going to)</h3>
+                <p>What are you going to do to improve your English this year?</p>
+                <textarea rows="2" placeholder="I am going to..."></textarea>
+
+                <h3>Discussion 3: Daily Life (Present Continuous)</h3>
+                <p>What are you currently doing to prepare for your next holiday or weekend?</p>
+                <textarea rows="2" placeholder="I am..."></textarea>
+
+                <h3>Discussion 4: The Environment (Predictions - Will / Be going to)</h3>
+                <p>Look at the pollution in big cities. What is going to happen to the environment if we don't change? What will you do to help?</p>
+                <textarea rows="2" placeholder="The environment is going to... I will..."></textarea>
+            </div>
+
+            <div id="section-5" class="section">
+                <h2>5. Sentence Transformation Drills 🔄</h2>
+                <p>Rewrite the original sentence using the new forms. <em>(Use full words or contractions like I'm)</em></p>
+                
+                <h3>1. She is traveling to London tomorrow.</h3>
+                <input type="text" placeholder="Change to 'Be going to'...">
+                <input type="text" placeholder="Change to 'Will'...">
+                
+                <h3>2. I am playing tennis later.</h3>
+                <input type="text" placeholder="Change to 'Be going to'...">
+                <input type="text" placeholder="Change to 'Will'...">
+
+                <h3>3. They are meeting the boss at 6 PM.</h3>
+                <input type="text" placeholder="Change to 'Be going to'...">
+                <input type="text" placeholder="Change to 'Will'...">
+
+                <h3>4. He is starting a new job on Monday.</h3>
+                <input type="text" placeholder="Change to 'Be going to'...">
+                <input type="text" placeholder="Change to 'Will'...">
+
+                <h3>5. We are having pizza for dinner.</h3>
+                <input type="text" placeholder="Change to 'Be going to'...">
+                <input type="text" placeholder="Change to 'Will'...">
+
+                <button class="action-btn" onclick="toggleHint('fb-5', '1. She is going to travel... / She will travel...<br>2. I am going to play... / I will play...<br>3. They are going to meet... / They will meet...<br>4. He is going to start... / He will start...<br>5. We are going to have... / We will have...')">Show All Answers</button>
+                <div id="fb-5" class="feedback"></div>
+            </div>
+
+            <div id="section-6" class="section">
+                <h2>6. Time Line Activities ⏳</h2>
+                <p>Look at the timeline of events for Sarah's week. Write a sentence for each event using the correct form (Present Continuous for fixed plans, Be Going To for intentions, Will for predictions/hopes).</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>Mon, 3 PM</strong><br>
+                        <em>Fixed Meeting</em><br>
+                        (Meet Boss)
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Wednesday</strong><br>
+                        <em>Intention</em><br>
+                        (Clean House)
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Friday Night</strong><br>
+                        <em>Fixed Event</em><br>
+                        (Fly to Rome)
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Saturday</strong><br>
+                        <em>Plan</em><br>
+                        (Visit Museums)
+                    </div>
+                    <div class="timeline-item">
+                        <strong>Sunday</strong><br>
+                        <em>Prediction</em><br>
+                        (Be very tired!)
+                    </div>
+                </div>
+
+                <textarea rows="6" placeholder="1. On Monday, she is meeting her boss.&#10;2. &#10;3. &#10;4. &#10;5. "></textarea>
+                <button class="action-btn" onclick="toggleHint('fb-6', '1. On Monday, she is meeting her boss.<br>2. On Wednesday, she is going to clean the house.<br>3. On Friday night, she is flying to Rome.<br>4. On Saturday, she is going to visit museums.<br>5. On Sunday, she will probably be very tired!')">Show Example Answers</button>
+                <div id="fb-6" class="feedback"></div>
+            </div>
+
+            <div id="section-7" class="section">
+                <h2>7. Interview Tasks 🎤</h2>
+                <p>Interview a friend (or answer for yourself). Write complete sentences.</p>
+                
+                <ol>
+                    <li>
+                        <strong>What are you doing this evening? (Fixed plan)</strong><br>
+                        <input type="text" placeholder="I am... ">
+                    </li>
+                    <li>
+                        <strong>What are you going to do after this class? (Intention)</strong><br>
+                        <input type="text" placeholder="I am going to... ">
+                    </li>
+                    <li>
+                        <strong>Do you think it will rain later? (Prediction)</strong><br>
+                        <input type="text" placeholder="Yes, I think it will... / No, it won't...">
+                    </li>
+                    <li>
+                        <strong>Where are you traveling for your next holiday? (Arrangement)</strong><br>
+                        <input type="text" placeholder="I am traveling to... ">
+                    </li>
+                    <li>
+                        <strong>What will life be like in 2050? (Prediction)</strong><br>
+                        <input type="text" placeholder="I think people will... ">
+                    </li>
+                </ol>
+            </div>
+
+            <div id="section-8" class="section">
+                <h2>8. Error Correction Game ❌✅</h2>
+                <p>Find the mistakes in these 5 sentences and type the correct version.</p>
+                
+                <p><strong>1. Incorrect:</strong> I will going to the party tonight.</p>
+                <input type="text" placeholder="Type correct sentence...">
+                
+                <p><strong>2. Incorrect:</strong> Look at those dark clouds! It will rain.</p>
+                <input type="text" placeholder="Type correct sentence...">
+                
+                <p><strong>3. Incorrect:</strong> We fly to Madrid next Monday. We have tickets.</p>
+                <input type="text" placeholder="Type correct sentence...">
+
+                <p><strong>4. Incorrect:</strong> I am go to see a movie tomorrow.</p>
+                <input type="text" placeholder="Type correct sentence...">
+
+                <p><strong>5. Incorrect:</strong> She thinks he is going to wins the race.</p>
+                <input type="text" placeholder="Type correct sentence...">
+
+                <button class="action-btn" onclick="toggleHint('fb-8', '1. I am going to the party tonight. (or: I will go)<br>2. Look at those dark clouds! It is going to rain.<br>3. We are flying to Madrid next Monday.<br>4. I am going to see a movie tomorrow.<br>5. She thinks he will win the race. (or: is going to win)')">Check My Corrections</button>
+                <div id="fb-8" class="feedback"></div>
+            </div>
+
+            <div id="section-9" class="section">
+                <h2>9. Chain Stories 🔗</h2>
+                <p>Let's build a story! For each starter, write two more sentences using different future forms.</p>
+                
+                <h3>Story 1: The Vacation</h3>
+                <div style="border-left: 3px solid var(--primary); padding-left: 1rem; margin-bottom:1rem;">
+                    <p><strong>Teacher:</strong> Next summer, I’m going to visit Italy. <em>(Plan)</em></p>
+                    <input type="text" placeholder="Add a prediction (will)...">
+                    <input type="text" placeholder="Add a current action happening right now to prepare (Present Continuous)...">
+                </div>
+
+                <h3>Story 2: The Lottery</h3>
+                <div style="border-left: 3px solid var(--primary); padding-left: 1rem; margin-bottom:1rem;">
+                    <p><strong>Teacher:</strong> I just won the lottery! I will buy a huge house. <em>(Spontaneous decision)</em></p>
+                    <input type="text" placeholder="Add a plan (be going to)...">
+                    <input type="text" placeholder="Add a fixed arrangement (Present Continuous)...">
+                </div>
+
+                <h3>Story 3: The Strange Noise</h3>
+                <div style="border-left: 3px solid var(--primary); padding-left: 1rem; margin-bottom:1rem;">
+                    <p><strong>Teacher:</strong> Listen! Someone is knocking at the door. I will open it. <em>(Spontaneous decision)</em></p>
+                    <input type="text" placeholder="Add a prediction about who it is (will)...">
+                    <input type="text" placeholder="Add what you are going to do if it's a monster (be going to)...">
+                </div>
+            </div>
+
+            <div id="section-10" class="section">
+                <h2>10. Real-Life Application 🎉</h2>
+                <div class="tip-box">
+                    Write short paragraphs for these real-life tasks. Use <em>Present Continuous</em> (preparing now/fixed), <em>Be going to</em> (plans), and <em>Will</em> (predictions/sudden ideas).
+                </div>
+                
+                <h3>Task 1: Plan a Birthday Party</h3>
+                <textarea rows="4" placeholder="I am organizing a party. Right now, I am... Tomorrow, we are going to... I think everyone will..."></textarea>
+                
+                <h3>Task 2: Organize a School Trip</h3>
+                <textarea rows="4" placeholder="We are visiting the science museum next week. The bus is leaving at 8 AM..."></textarea>
+
+                <h3>Task 3: Predict a Sports Match</h3>
+                <textarea rows="4" placeholder="My favorite team is playing tonight. They are going to use a new strategy. I think they will..."></textarea>
+
+                <button class="action-btn" onclick="toggleHint('fb-10', 'Example Task 1: Right now, I am baking a cake for my friend. Tomorrow, we are going to play board games. I think everyone will have a great time!<br><br>Example Task 3: My team is playing at 8 PM. They are going to attack early. I think they will win 2-0!')">Show Examples</button>
+                <div id="fb-10" class="feedback"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Navigation Logic
+        function showSection(num) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            // Remove active class from buttons
+            document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById('section-' + num).classList.add('active');
+            // Highlight button
+            document.querySelectorAll('.sidebar button')[num-1].classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Hint/Answer Toggle Logic
+        function toggleHint(elementId, text) {
+            const el = document.getElementById(elementId);
+            if (el.style.display === 'block') {
+                el.style.display = 'none';
+            } else {
+                el.innerHTML = text;
+                el.className = 'feedback hint';
+                el.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
+
+```<!DOCTYPE html>
+<html>
+<head>
+	<title>Page Title</title>
+</head>
+<body>
+
+
+
+</body>
+</html>
